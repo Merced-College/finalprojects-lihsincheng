@@ -27,6 +27,11 @@ public class Expense {
     // Makes printing expenses readable
     @Override
     public String toString() {
-        return name + " ($" + amount + ", " + date + ")";
+        String output = name + " ($" + amount + ", " + date + ")";
+        if (dueDate != null){
+            output += " [Due: " + dueDate + "]";
+        }
+        return output;
+        
     }
 }

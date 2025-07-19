@@ -60,9 +60,19 @@ public class Main {
                     System.out.println("Amount must be positive!");
                 }
             } while (amount <= 0);
+        System.out.print("Is this a bill with a due date? (y/n): ");
+        String isBill = scanner.next().toLowerCase();
+
+        LocalDate dueDate = null;
+        if (isBill.equals("y")) {
+            System.out.print("Enter due date (YYYY-MM-DD): ");
+            String dueDateStr = scanner.next();
+            dueDate = LocalDate.parse(dueDateStr); // Convert String to LocalDate
+        }
+
         
         analyzer.addExpense(new Expense(
-            name, category, amount, LocalDate.now(), null
+            name, category, amount, LocalDate.now(), dueDate
         ));
         System.out.println("Expense added!");
     }

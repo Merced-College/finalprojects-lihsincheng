@@ -10,7 +10,7 @@ A Java terminal application that helps users track expenses, analyze spending pa
 ---
 
 ## ✨ Features
-- **Expense Tracking**: Add/delete expenses with categories
+- **Expense Tracking**: Add expenses with categories
 - **Spending Analysis**: Auto-generated category reports
 - **Budget Prediction**: Recursive 6-month forecasts
 - **Data Structures**: 
