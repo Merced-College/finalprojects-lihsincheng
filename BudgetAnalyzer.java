@@ -6,15 +6,17 @@ import java.util.*;
 public class BudgetAnalyzer {
     // Data Structures
     private final ArrayList<Expense> expenses = new ArrayList<>();          // 1. Dynamic array
-    private final PriorityQueue<Expense> upcomingBills = new PriorityQueue<>( // 2. Priority queue
-        Comparator.comparing(Expense::getDate)
+    private final PriorityQueue<Expense> upcomingBills = new PriorityQueue<>(
+        Comparator.comparing(Expense::getDueDate, Comparator.nullsLast(Comparator.naturalOrder()))
     );
     private final HashMap<String, Double> categoryTotals = new HashMap<>(); // 3. Hash table
     
     // Add new expense to all data structures
     public void addExpense(Expense expense) {
         expenses.add(expense);
+        if (expense.getDueDate() != null) {
         upcomingBills.add(expense);
+    }
         
         // Update category total
         categoryTotals.merge(expense.getCategory(), 
@@ -63,6 +65,15 @@ public class BudgetAnalyzer {
     
     // Getters for data structures
     public List<Expense> getAllExpenses() { return new ArrayList<>(expenses); }
-    public Queue<Expense> getUpcomingBills() { return new LinkedList<>(upcomingBills); }
+    public List<Expense> getSortedBills() {
+        List<Expense> sortedBills = new ArrayList<>();
+        PriorityQueue<Expense> copy = new PriorityQueue<>(upcomingBills);
+        while (!copy.isEmpty()) {
+            sortedBills.add(copy.poll());
+        }
+        return sortedBills;
+    }
     public Map<String, Double> getCategoryTotals() { return new HashMap<>(categoryTotals); }
+
+    
 }

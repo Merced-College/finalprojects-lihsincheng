@@ -23,6 +23,8 @@ public class Expense {
     public double getAmount() { return amount; }
     public LocalDate getDate() { return date; }
     public LocalDate getDueDate() { return dueDate; }
+    public String getName() { return name;}
+    
 
     // Makes printing expenses readable
     @Override
@@ -34,4 +36,6 @@ public class Expense {
         return output;
         
     }
+
+
 }

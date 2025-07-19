@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -25,7 +26,8 @@ public class Main {
                 case 2 -> showAllExpenses(analyzer);
                 case 3 -> showCategoryReport(analyzer);
                 case 4 -> predictBudget(analyzer, scanner);
-                case 5 -> System.exit(0);
+                case 5 -> showUpcomingBills(analyzer);
+                case 6 -> System.exit(0);
                 default -> System.out.println("Invalid choice!");
             }
         }
@@ -37,7 +39,8 @@ public class Main {
         System.out.println("2. View All Expenses");
         System.out.println("3. Category Report");
         System.out.println("4. Predict Future Budget");
-        System.out.println("5. Exit");
+        System.out.println("5. View Upcoming Bills");
+        System.out.println("6. Exit");
         System.out.print("Choose an option: ");
     }
     
@@ -89,6 +92,7 @@ public class Main {
         );
     }
     
+    
     private static void predictBudget(BudgetAnalyzer analyzer, Scanner scanner) {
         System.out.print("Enter months to predict: ");
         int months = scanner.nextInt();
@@ -101,4 +105,16 @@ public class Main {
         System.out.printf("\nPredicted spending in %d months: $%.2f\n", 
             months, prediction);
     }
+
+    private static void showUpcomingBills(BudgetAnalyzer analyzer) {
+    System.out.println("\nUpcoming Bills (Earliest First):");
+    List<Expense> bills = analyzer.getSortedBills();
+    if (bills.isEmpty()) {
+        System.out.println("No upcoming bills!");
+    } else {
+        bills.forEach(bill -> 
+            System.out.println(bill.getName() + " (Due: " + bill.getDueDate() + ")")
+        );
+    }
+}
 }
