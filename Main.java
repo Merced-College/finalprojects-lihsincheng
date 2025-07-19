@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -11,8 +12,14 @@ public class Main {
         
         while (true) {
             printMenu();
-            int choice = scanner.nextInt();
-            
+            int choice;
+            try {
+                choice = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a number 1-5.");
+                scanner.nextLine(); // Clear the invalid input
+                continue; // Restart loop
+            }
             switch (choice) {
                 case 1 -> addExpense(analyzer, scanner);
                 case 2 -> showAllExpenses(analyzer);
@@ -41,8 +48,18 @@ public class Main {
         System.out.print("Enter category: ");
         String category = scanner.next();
         
-        System.out.print("Enter amount: ");
-        double amount = scanner.nextDouble();
+        double amount;
+            do {
+                System.out.print("Enter amount: ");
+                while (!scanner.hasNextDouble()) {
+                    System.out.println("Invalid input! Please enter a number.");
+                    scanner.next(); // Clear invalid input
+                }
+                amount = scanner.nextDouble();
+                if (amount <= 0) {
+                    System.out.println("Amount must be positive!");
+                }
+            } while (amount <= 0);
         
         analyzer.addExpense(new Expense(
             name, category, amount, LocalDate.now(), null
