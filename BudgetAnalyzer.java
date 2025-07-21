@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -48,10 +49,9 @@ public class BudgetAnalyzer {
     }
     
     // Algorithm 3: Recursive Budget Prediction
-    public double predictBudget(double current, int months) {
-        if (months <= 0) return current;
-        double monthlyAvg = getAverageSpending();
-        return predictBudget(current + monthlyAvg, months - 1);
+    public double predictBudgetRecursive(int months) {
+        if (months <= 0) return 0;  // Base case
+        return getAverageSpending() + predictBudgetRecursive(months - 1);
     }
     
     // Helper methods
@@ -59,9 +59,28 @@ public class BudgetAnalyzer {
         return expenses.stream().mapToDouble(Expense::getAmount).sum();
     }
     
-    private double getAverageSpending() {
-        return getTotalSpending() / Math.max(1, expenses.size());
+    public double getAverageSpending() {
+        if (expenses.isEmpty()) return 0;
+        return getTotalSpending() / getMonthCount();
     }
+
+    public double calculateFuturePrediction(int months) {
+        return predictBudgetRecursive(months);
+    }
+
+    private long getMonthCount() {
+    if (expenses.isEmpty()) return 1;
+    LocalDate earliest = expenses.stream()
+        .map(Expense::getDate)
+        .min(LocalDate::compareTo)
+        .orElse(LocalDate.now());
+    LocalDate latest = expenses.stream()
+        .map(Expense::getDate)
+        .max(LocalDate::compareTo)
+        .orElse(LocalDate.now());
+    return Math.max(1, earliest.until(latest).toTotalMonths() + 1);
+    }
+
     
     // Getters for data structures
     public List<Expense> getAllExpenses() { return new ArrayList<>(expenses); }

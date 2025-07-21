@@ -97,13 +97,16 @@ public class Main {
         System.out.print("Enter months to predict: ");
         int months = scanner.nextInt();
         
-        double prediction = analyzer.predictBudget(
-            analyzer.getTotalSpending(), 
-            months
-        );
+        double currentTotal = analyzer.getTotalSpending();
+        double monthlyAvg = analyzer.getAverageSpending();
+        double futurePrediction = analyzer.calculateFuturePrediction(months);
+        double totalPrediction = currentTotal + futurePrediction;
         
-        System.out.printf("\nPredicted spending in %d months: $%.2f\n", 
-            months, prediction);
+        System.out.println("\n=== Budget Prediction ===");
+        System.out.printf("Current total spending: $%.2f\n", currentTotal);
+        System.out.printf("Average monthly spending: $%.2f\n", monthlyAvg);
+        System.out.printf("Predicted future spending (next %d months): $%.2f\n", months, futurePrediction);
+        System.out.printf("Total predicted spending: $%.2f\n", totalPrediction);
     }
 
     private static void showUpcomingBills(BudgetAnalyzer analyzer) {
